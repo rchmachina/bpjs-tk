@@ -1,0 +1,16 @@
+version: '3.8'  # Specify the version of docker-compose
+
+services:
+  app:
+    build:
+      context: . 
+      dockerfile: Dockerfile  
+    volumes:
+      - .:/usr/src/app 
+      - /usr/src/app/vendor  
+    ports:
+      - "8888:8888" 
+    environment:
+      - APP_ENV=development  
+    command: air 
+
