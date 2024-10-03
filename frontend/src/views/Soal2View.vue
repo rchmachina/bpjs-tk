@@ -1,72 +1,118 @@
 <template>
-    <div>
-      <label for="options">Choose an option:</label>
-      <select v-model="selectedOption" id="options">
-        <option disabled value="">Please select one</option>
-        <option v-for="(option, index) in options" :key="index" :value="option">
-          {{ option }}
+  <div class="p-20 ml-20 overflow-x-auto">
+    <label for="itemSelect">Select the parent:</label>
+    <div class="flex items-center">
+      <select id="itemSelect" v-model="selectedId" @change="handleSelectChange">
+        <option disabled value="">Please select one</option> <!-- Optional placeholder -->
+        <option v-for="item in data" :key="item.id" :value="item.id">
+          {{ item.nameData }}
         </option>
       </select>
-  
-      <p>Selected option: {{ selectedOption }}</p>
+      <button @click="removeSelected" class="ml-2 bg-red-800 hover:text-red-800">
+        Clear
+      </button>
     </div>
-  </template>
-  
-  <script>
-  import { ref } from 'vue';
-  
-  
-  export default {
-    setup() {
-      const selectedOption = ref(""); // The default value for the select box
-      const options = ref([
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option 4",
-      ]);
-  
-      return {
-        selectedOption,
-        options,
-      };
-    },
-  };
+
+    
+      <table class="table w-full">
+        <thead>
+          <tr>
+            <th class="border px-4 py-2">id</th>
+            <th class="border px-4 py-2">nama buah</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in data" :key="item.id">
+            <td class="border px-4 py-2">{{ item.id }}</td>
+            <td class="border px-4 py-2">{{ item.nameData }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+export default {
+  name: "DataView",
+  setup() {
+    const data = ref([]);
+    const selectedId = ref("");
+    const searchTerm = ref("");
 
 
-  export default {
-  name: 'DataView',
-  data() {
-    return {
-      data: [],
-      searchTerm: '',
-      //searchResults: []
+    const handleSelectChange = () => {
+      console.log('DWAAR',selectedId.value)
+      if (selectedId.value !== '') {
+        searchData(); // Call searchData when selectedId changes
+      } else {
+        fetchingGetAllData(); // Call to fetch all data if no selection
+      }
     };
-  },
-  mounted() {
-    this.search();
-  },
-  methods: {
+    // Method to search for data based on the search term
 
-    search() {
 
-      axios.get('https://data.gov.sg/api/action/datastore_search?resource_id=eb8b932c-503c-41e7-b513-114cffbe2338&limit=20', {
-        params: {
+    const removeSelected = () => {
+      console.log(`Removing item with ID: ${selectedId.value}`);
+      // Logic to remove the selected item can go here
+      // e.g., send a DELETE request to your API if needed
 
-          q: this.searchTerm
-        }
-      })
-        .then(response => {
-          this.data =  response.data.result.records;
+      // Optionally reset selectedId
+      selectedId.value = "";
+      fetchingGetAllData(); // Refresh data if necessary
+    };
+
+    const searchData = () => {
+      const link = `${import.meta.env.VITE_BACKEND_API_URL}/get-child-soal2?id=${selectedId.value}`;
+      console.log(link);
+
+      axios
+        .get(link)
+        .then((response) => {
+          data.value = response.data.data;
+          console.log(data.value);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
-    }
+    };
 
+    // Method to fetch all data
+    const fetchingGetAllData = () => {
+      const link = `${import.meta.env.VITE_BACKEND_API_URL}/get-data-soal2`;
+      console.log(link);
+
+      axios
+        .get(link)
+        .then((response) => {
+          data.value = response.data.data;
+          console.log(data.value);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    // Lifecycle hook to fetch all data when the component is mounted
+    onMounted(() => {
+      fetchingGetAllData();
+    });
+
+    return {
+      data,
+      selectedId,
+      handleSelectChange,
+      fetchingGetAllData,
+      removeSelected
+    };
   },
 };
-  </script>
-  
+</script>
 
-  
+<style scoped>
+/* No additional styles needed for DaisyUI table */
+</style>

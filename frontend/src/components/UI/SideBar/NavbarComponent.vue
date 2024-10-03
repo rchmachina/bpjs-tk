@@ -3,14 +3,11 @@
     class="bg-teal-500 text-center text-white float-left fixed md:static min-h-screen z-10 top-0 left-0 bottom-0 p-2 flex flex-col transition-all duration-700 ease"
     :class="sizeNavbar"
   >
-
-      
-      <i
+    <i
       class="bx bxs-chevrons-left bx-sm cursor-pointer absolute p-2 text-green-200 transition-all duration-500 ease-linear rotate-0"
       :class="rotateIcon"
       @click="collapsedNavbar"
     ></i>
-
 
     <h1 class="text-3xl pt-10">
       <span v-if="stateSideBar">
@@ -18,7 +15,6 @@
           <img
             class="bg-green-300 rounded-full hover:bg-green-400 cursor-pointer"
             src=""
-            
           />
         </router-link>
       </span>
@@ -30,10 +26,6 @@
       <SideBarLink to="/soal1" text="Home" icon="bx-home" />
       <SideBarLink to="/soal2" text="table" icon="bx-table" />
     </section>
-    
-
-
-
   </nav>
 </template>
 

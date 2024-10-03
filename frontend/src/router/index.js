@@ -11,13 +11,13 @@ const router = createRouter({
     },
     {
       path: "/soal1",
-      name: "tableView",
-      component: () => import("../views/TableView.vue"),
+      name: "soal1",
+      component: () => import("../views/Soal1View.vue"),
     },
     {
       path: "/soal2",
-      name: "calculator",
-      component: () => import("../views/CalculatorView.vue"),
+      name: "soal2",
+      component: () => import("../views/Soal2View.vue"),
     },
   ],
 });
