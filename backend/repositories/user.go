@@ -5,24 +5,22 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rchmachina/bpjs-tk/model"
-
 	_ "github.com/lib/pq"
-
+	"github.com/rchmachina/bpjs-tk/dto"
 	"gorm.io/gorm"
 )
 
 // kontrak
 type UserRepository interface {
-	CreateUserDb(user model.CreateUser) (string, error)
-	LoginUserDB(string) (model.LoginResponse, error)
+	CreateUserDb(user dto.CreateUser) (string, error)
+	LoginUserDB(string) (dto.LoginResponse, error)
 }
 
 func RepositoryUser(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) CreateUserDb(user model.CreateUser) (string, error) {
+func (r *repository) CreateUserDb(user dto.CreateUser) (string, error) {
 	var result string
 
 	fmt.Println("masuk pak cik")
@@ -36,9 +34,9 @@ func (r *repository) CreateUserDb(user model.CreateUser) (string, error) {
 	return result, err
 }
 
-func (r *repository) LoginUserDB(userName string) (model.LoginResponse, error) {
+func (r *repository) LoginUserDB(userName string) (dto.LoginResponse, error) {
 
-	var responseLogin model.LoginResponse
+	var responseLogin dto.LoginResponse
 	var result string
 
 	paramsJSON, err := json.Marshal(map[string]interface{}{"userName": userName})

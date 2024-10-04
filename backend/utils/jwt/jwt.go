@@ -5,16 +5,15 @@ import (
 	// "os"
 	"time"
 
-	"github.com/rchmachina/bpjs-tk/model"
-
 	"github.com/golang-jwt/jwt"
+	"github.com/rchmachina/bpjs-tk/dto"
 )
 
 var SecretKey = "supperrrsecret"
 
-func GenerateToken(user *model.LoginResponse) (string, error) {
+func GenerateToken(user *dto.LoginResponse) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour) // Token expires in 24 hours
-	claims := &model.CustomClaims{
+	claims := &dto.CustomClaims{
 		Username: user.UserName,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),

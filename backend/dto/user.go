@@ -1,4 +1,4 @@
-package model
+package dto
 
 type Login struct {
 	Password string `json:"hashPassword"`

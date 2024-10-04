@@ -6,9 +6,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-// if yaml not found then use value from hardcoded
+// if yaml value not found then use value from hardcoded
 func GetConfigWithDefaultSetting(path string, hardCoded interface{}) interface{} {
-	viper.SetConfigName("env")
+	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()

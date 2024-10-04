@@ -4,10 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
-
+	"github.com/rchmachina/bpjs-tk/dto"
 	"github.com/google/uuid"
-	"github.com/rchmachina/bpjs-tk/model"
 
 	_ "github.com/lib/pq"
 
@@ -16,17 +14,17 @@ import (
 
 // kontrak
 type Soal2Repository interface {
-	GetDataSoal2() ([]model.GetDataSoal2, error)
-	GetChildDataSoal2(uuidData string) ([]model.GetDataSoal2, error)
+	GetDataSoal2() ([]dto.GetDataSoal2, error)
+	GetChildDataSoal2(uuidData string) ([]dto.GetDataSoal2, error)
 }
 
 func RepositorySoal2(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) GetDataSoal2() ([]model.GetDataSoal2, error) {
+func (r *repository) GetDataSoal2() ([]dto.GetDataSoal2, error) {
 	var result string
-	var getResult []model.GetDataSoal2
+	var getResult []dto.GetDataSoal2
 
 	fmt.Println("masuk pak cik")
 	paramsJSON, err := json.Marshal(map[string]interface{}{})
@@ -44,9 +42,9 @@ func (r *repository) GetDataSoal2() ([]model.GetDataSoal2, error) {
 	return getResult, err
 }
 
-func (r *repository) GetChildDataSoal2(uuidData string) ([]model.GetDataSoal2, error) {
+func (r *repository) GetChildDataSoal2(uuidData string) ([]dto.GetDataSoal2, error) {
 
-	var getResult []model.GetDataSoal2
+	var getResult []dto.GetDataSoal2
 	var result string
 
 	fmt.Println("masuk pak cik")
@@ -56,7 +54,7 @@ func (r *repository) GetChildDataSoal2(uuidData string) ([]model.GetDataSoal2, e
 		fmt.Println("Error parsing UUID:", err)
 		return getResult, err
 	}
-	log.Println("passed 2 :", id)
+
 	paramsJSON, err := json.Marshal(map[string]interface{}{"uuidParent": id})
 	if err != nil {
 		return getResult, err

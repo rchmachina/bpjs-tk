@@ -6,6 +6,7 @@ import (
 
 func RouteInit(e *echo.Group) {
 	Soal2Route(e)
+	Soal1Route(e)
 
 }
 

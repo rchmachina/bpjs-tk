@@ -6,8 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-
-
 func JSONBulkResponse(c echo.Context, statusCode int, data interface{}) error {
 	var statusMessage string
 
@@ -90,7 +88,3 @@ func ToJSON(v interface{}) string {
 
 	return string(b)
 }
-
-
-
-

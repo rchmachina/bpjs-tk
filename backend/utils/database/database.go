@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-	"log"
 
 	"time"
 
@@ -33,7 +32,7 @@ func DatabaseConnection() *gorm.DB {
 	getPortDb := env.GetConfig("app.db.PORT_DB")
 	getNameDb := env.GetConfig("app.db.DB_NAME")
 
-	log.Println("isi", getDomainName)
+
 
 	DB, err = gorm.Open(postgres.Open(fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable ", getDomainName, getUserNameDb, getPassDb, getNameDb, getPortDb)), &gorm.Config{})
 	if err != nil {

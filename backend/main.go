@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+	// "log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -15,7 +15,7 @@ import (
 
 func main() {
 	//get the env file
-	log.Println("asuuu")
+
 	e := echo.New()
 	//cors for api
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -24,13 +24,12 @@ func main() {
 	}))
 
 	fmt.Println("cors already activated")
-	log.Println("u here?")
 	//connnect to db
 	_ = database.DatabaseConnection()
 	fmt.Println("connected")
 
 	baseApi := fmt.Sprint(env.GetConfigWithDefaultSetting("app.server.api_uri_base", "/api/v1"))
-	baseAdress := fmt.Sprint(env.GetConfigWithDefaultSetting("app.server.address", ":8888"))
+	baseAdress := fmt.Sprint(env.GetConfigWithDefaultSetting("app.server.address", ":8080"))
 
 	routes.RouteInit(e.Group(baseApi))
 	fmt.Println("server running localhost", baseAdress)
