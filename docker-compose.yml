@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./fe
+      dockerfile: Dockerfile.vue
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host 0.0.0.0
+
+  backend:    
+    build:
+      context: ./be
+      dockerfile: Dockerfile.golang
+    env_file:
+      - ./be/.env
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app/be
+    command: air ./main.go -b 0.0.0.0
+    depends_on:
+      - frontend
+      - db   
+      - redis  
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=pg_database
+    ports:
+      - "5222:5432"
+    volumes:
+      - ./be/dump.sql:/docker-entrypoint-initdb.d/dump.sql  
+      - postgres-db:/var/lib/postgresql/data
+
+  redis:  
+    image: redis:alpine
+    ports:
+      - "6380:6379"  
+
+volumes:
+  postgres-db:

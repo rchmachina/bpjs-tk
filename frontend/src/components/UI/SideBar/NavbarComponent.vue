@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="bg-teal-500 text-center text-white float-left fixed md:static min-h-screen z-10 top-0 left-0 bottom-0 p-2 flex flex-col transition-all duration-700 ease"
+    class="bg-gray-800 text-center text-white float-left fixed md:static min-h-screen z-10 top-0 left-0 bottom-0 p-2 flex flex-col transition-all duration-700 ease"
     :class="sizeNavbar"
   >
     <i
@@ -13,7 +13,7 @@
       <span v-if="stateSideBar">
         <router-link to="/">
           <img
-            class="bg-green-300 rounded-full hover:bg-green-400 cursor-pointer"
+            class="bg-gray-800 rounded-full hover:bg-green-400 cursor-pointer"
             src=""
           />
         </router-link>
@@ -22,9 +22,8 @@
     </h1>
 
     <section class="flex flex-col gap-5 mt-10">
-      <SideBarLink to="/" text="Home" icon="bx-home" />
-      <SideBarLink to="/soal1" text="Home" icon="bx-home" />
-      <SideBarLink to="/soal2" text="table" icon="bx-table" />
+      <SideBarLink to="/soal1" text="Soal 1" icon="bx-home" />
+      <SideBarLink to="/soal2" text="Soal 2" icon="bx-table" />
     </section>
   </nav>
 </template>

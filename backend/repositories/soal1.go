@@ -14,8 +14,8 @@ import (
 
 // kontrak
 type Soal1Repository interface {
-	//postDataSoal1() ([]dto.GetDataSoal2, error)
-	GetSoal1Repository(uuidData string) ([]dto.GetDataSoal2, error)
+	GetSoal1Repository(pageInt, limitInt int) ([]dto.GetDataSoal1, error)
+	GetChildSoal1Repository(id string) ([]dto.ChildDataDetail, error)
 	PostSoal1Repository(dto.BulkDataSoal1) string
 	DeleteSoal1Repository() error
 }
@@ -24,17 +24,20 @@ func RepositorySoal1(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) GetSoal1Repository(uuidData string) ([]dto.GetDataSoal2, error) {
+func (r *repository) GetSoal1Repository(pageInt, limitInt int) ([]dto.GetDataSoal1, error) {
 	var result string
-	var getResult []dto.GetDataSoal2
+	var getResult []dto.GetDataSoal1
 
 	fmt.Println("masuk pak cik")
-	paramsJSON, err := json.Marshal(map[string]interface{}{})
+	paramsJSON, err := json.Marshal(map[string]interface{}{
+		"page":  pageInt,
+		"limit": limitInt,
+	})
 	if err != nil {
 		return getResult, err
 	}
 
-	err = r.db.Raw("select * soal1.insert_bulk_data($1::jsonb)", string(paramsJSON)).Scan(&result).Error
+	err = r.db.Raw("select * from soal1.get_all_data_with_pagination($1::jsonb)", string(paramsJSON)).Scan(&result).Error
 
 	err = json.Unmarshal([]byte(result), &getResult)
 	if err != nil {
@@ -60,7 +63,7 @@ func (r *repository) PostSoal1Repository(data dto.BulkDataSoal1) string {
 func (r *repository) DeleteSoal1Repository() error {
 	query := "DELETE FROM soal1.\"data\" "
 
-	result := r.db.Exec(query, )
+	result := r.db.Exec(query)
 
 	// Check for errors
 	if result.Error != nil {
@@ -73,4 +76,26 @@ func (r *repository) DeleteSoal1Repository() error {
 	}
 
 	return nil
+}
+func (r *repository) GetChildSoal1Repository(id string) ([]dto.ChildDataDetail, error) {
+
+	var result string
+	var getResult []dto.ChildDataDetail
+
+	fmt.Println("masuk pak cik")
+	paramsJSON, err := json.Marshal(map[string]interface{}{
+		"parentId": id,
+	})
+	if err != nil {
+		return getResult, err
+	}
+
+	err = r.db.Raw("select * from soal1.get_child_data($1::jsonb)", string(paramsJSON)).Scan(&result).Error
+
+	err = json.Unmarshal([]byte(result), &getResult)
+	if err != nil {
+		return getResult, errors.New("not found")
+	}
+
+	return getResult, err
 }

@@ -1,87 +1,184 @@
 <template>
-  <div class="p-20 ml-20">>
-    <label for="options">Choose an option:</label>
-    <select v-model="selectedOption" id="options">
-      <option disabled value="">Please select one</option>
-      <option v-for="(option, index) in options" :key="index" :value="option">
-        {{ option }}
-      </option>
-    </select>
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+  >
+    <div
+      class="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-96 overflow-y-auto"
+    >
+      <div class="p-5">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-bold">Child Details</h3>
+          <button @click="closeModal" class="text-red-600 text-2xl">
+            &times;
+          </button>
+        </div>
 
-    <p>Selected option: {{ selectedOption }}</p>
+        <table class="table w-full mt-5">
+          <thead>
+            <tr>
+              <th class="border px-4 py-2">ID</th>
+              <th class="border px-4 py-2">Nominal</th>
+              <th class="border px-4 py-2">Start Date</th>
+              <th class="border px-4 py-2">End Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="child in childData" :key="child.id">
+              <td class="border px-4 py-2">{{ child.id }}</td>
+              <td class="border px-4 py-2">{{ child.nominal }}</td>
+              <td class="border px-4 py-2">{{ child.startDate }}</td>
+              <td class="border px-4 py-2">{{ child.endDate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-    <input v-model="searchTerm" @input="search" placeholder="Search..." />
-
-    <table class="table w-full">
-      <thead>
-        <tr>
-          <th class="border px-4 py-2">Sex</th>
-          <th class="border px-4 py-2">No of Graduates</th>
-          <th class="border px-4 py-2">Course Type</th>
-          <th class="border px-4 py-2">Year</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in filteredData" :key="item.id">
-          <td class="border px-4 py-2">{{ item.sex }}</td>
-          <td class="border px-4 py-2">{{ item.no_of_graduates }}</td>
-          <td class="border px-4 py-2">{{ item.course_type }}</td>
-          <td class="border px-4 py-2">{{ item.year }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="p-20 ml-20">
+    <div v-if="isWaiting" class="bg-green-100 text-green-800 p-4 rounded mb-4">
+      Tunggu ya...
+    </div>
+    <div class="flex items-center">
+      <button
+        @click="addData"
+        class="ml-2 bg-green-800 hover:text-green-800 text-white rounded-lg shadow-lg px-4 py-2"
+      >
+        Add Concurrent 1000 Data
+      </button>
+      <button
+        @click="deleteData"
+        class="ml-2 bg-red-800 hover:text-red-800 text-white rounded-lg shadow-lg px-4 py-2"
+      >
+        Clear
+      </button>
+    </div>
+    <div class="bg-white card mt-4 border rounded-lg shadow-lg">
+      <div class="overflow-x-auto max-h-96">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th class="border px-4 py-2">ID</th>
+              <th class="border px-4 py-2">Nominal</th>
+              <th class="border px-4 py-2">Start Date</th>
+              <th class="border px-4 py-2">End Date</th>
+              <th class="border px-4 py-2">Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in data" :key="item.id">
+              <td class="border px-4 py-2">{{ item.id }}</td>
+              <td class="border px-4 py-2">{{ item.nominal }}</td>
+              <td class="border px-4 py-2">{{ item.startDate }}</td>
+              <td class="border px-4 py-2">{{ item.endDate }}</td>
+              <td class="border px-4 py-2">
+                <button
+                  @click="childDetail(item.id)"
+                  class="ml-2 bg-blue-800 text-white px-4 py-1 rounded"
+                >
+                  Detail
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
-
 <script>
-import { ref,computed} from 'vue';
-import axios from 'axios';
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
 export default {
-  name: 'Soal1View',
+  name: "DataView",
   setup() {
-    const selectedOption = ref(""); // The default value for the select box
-    const options = ref([
-      "Option 1",
-      "Option 2",
-      "Option 3",
-      "Option 4",
-    ]);
-    
     const data = ref([]);
-    const searchTerm = ref("");
+    const childData = ref([]);
+    const isModalOpen = ref(false);
+    const isWaiting = ref(false);
 
-    const search = () => {
-      axios.get('https://data.gov.sg/api/action/datastore_search?resource_id=eb8b932c-503c-41e7-b513-114cffbe2338&limit=20', {
-        params: {
-          q: searchTerm.value
-        }
-      })
-      .then(response => {
-        data.value = response.data.result.records;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    const addData = () => {
+      const link = `${import.meta.env.VITE_BACKEND_API_URL}/concurent-soal1`;
+      isWaiting.value = true;
+      axios
+        .post(link)
+        .then((response) => {
+          console.log("Data posted successfully:", response.data);
+          setTimeout(() => {
+            isWaiting.value = false;
+            fetchingGetAllData();
+          }, 15000);
+        })
+        .catch((error) => {
+          console.error("Error posting data:", error);
+        });
     };
 
-    const filteredData = computed(() => {
-      if (!searchTerm.value) {
-        return data.value; // Return all data if no search term
-      }
-      return data.value.filter(item => {
-        // Modify the filtering logic as needed based on your data structure
-        return item.someField.includes(searchTerm.value); // Change 'someField' to the actual field you want to filter
-      });
+    const deleteData = () => {
+      const link = `${import.meta.env.VITE_BACKEND_API_URL}/soal1`;
+      isWaiting.value = true;
+      axios
+        .delete(link)
+        .then((response) => {
+          console.log("Data deleted successfully:", response.data);
+          setTimeout(() => {
+            isWaiting.value = false;
+            fetchingGetAllData();
+          }, 15000);
+        })
+        .catch((error) => {
+          console.error("Error deleting data:", error);
+        });
+    };
+
+    const fetchingGetAllData = () => {
+      const link = `${
+        import.meta.env.VITE_BACKEND_API_URL
+      }/soal1?page=1&limit=1000`;
+      axios
+        .get(link)
+        .then((response) => {
+          data.value = response.data.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    const childDetail = (id) => {
+      const link = `${
+        import.meta.env.VITE_BACKEND_API_URL
+      }/child-soal1?parentId=${id}`;
+      axios
+        .get(link)
+        .then((response) => {
+          childData.value = response.data.data;
+          isModalOpen.value = true; // Open the modal after getting child data
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    const closeModal = () => {
+      isModalOpen.value = false; // Close the modal
+    };
+
+    onMounted(() => {
+      fetchingGetAllData();
     });
 
     return {
-      selectedOption,
-      options,
-      searchTerm,
       data,
-      search,
-      filteredData
+      childData,
+      isModalOpen,
+      isWaiting,
+      addData,
+      deleteData,
+      childDetail,
+      closeModal,
     };
   },
 };

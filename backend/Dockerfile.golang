@@ -24,4 +24,3 @@ RUN ls -al /usr/src/app
 
 # Expose the port the app runs on
 EXPOSE 8888
-

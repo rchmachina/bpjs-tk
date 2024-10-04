@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"strconv"
 
 	"context"
 	"encoding/json"
@@ -299,4 +300,37 @@ func (h *soal1Handler) processKeysAsync(ctx context.Context, keys []string) {
 	if err != nil {
 		fmt.Errorf("could not delete keys: %v", err)
 	}
+}
+
+func (h *soal1Handler) GetSoal1Detail(c echo.Context) error {
+	id := c.QueryParam("parentId")
+
+
+	getAllChildData, err := h.soal1.GetChildSoal1Repository(id)
+	if err != nil {
+		return helper.JSONResponse(c, 501, err.Error())
+
+	}
+	return helper.JSONBulkResponse(c, 200, getAllChildData)
+}
+
+func (h *soal1Handler) GetSoal1(c echo.Context) error {
+	page := c.QueryParam("page")
+	pageInt, err := strconv.Atoi(page)
+	if err != nil {
+		return helper.JSONResponse(c, 400, err.Error())
+	}
+	limit := c.QueryParam("limit")
+	limitInt, err := strconv.Atoi(limit)
+	if err != nil {
+		return helper.JSONResponse(c, 400, err.Error())
+	}
+
+	getAllData, err := h.soal1.GetSoal1Repository(pageInt, limitInt)
+	if err != nil {
+		return helper.JSONResponse(c, 501, err.Error())
+
+	}
+	return helper.JSONBulkResponse(c, 200, getAllData)
+
 }

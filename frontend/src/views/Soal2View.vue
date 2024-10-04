@@ -46,7 +46,6 @@ export default {
 
 
     const handleSelectChange = () => {
-      console.log('DWAAR',selectedId.value)
       if (selectedId.value !== '') {
         searchData(); // Call searchData when selectedId changes
       } else {

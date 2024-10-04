@@ -1,10 +1,10 @@
 <template class="container mx-auto">
     <header class="header">
-    <h1>Website Title</h1>
+
   </header>
   <div>
     <NavbarComponent />
-    <div class="bg-amber-700 h-screen">
+    <div class="bg-slate-600 h-screen">
       <router-view/>
     </div>
   </div>
