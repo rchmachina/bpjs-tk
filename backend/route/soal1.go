@@ -1,31 +1,31 @@
 package routes
 
 import (
-	// "fmt"
-	// "log"
-	// "strconv"
+	"fmt"
+	"log"
+	"strconv"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/labstack/echo/v4"
 	handlers "github.com/rchmachina/bpjs-tk/handler"
 	repo "github.com/rchmachina/bpjs-tk/repositories"
 	"github.com/rchmachina/bpjs-tk/utils/database"
-	// env "github.com/rchmachina/bpjs-tk/utils/env"
+	env "github.com/rchmachina/bpjs-tk/utils/env"
 )
 
 func Soal1Route(e *echo.Group) {
 
-	// db := fmt.Sprint(env.GetConfigWithDefaultSetting("app.db.redis.db", 0))
-	// hostRedist := fmt.Sprint(env.GetConfigWithDefaultSetting("app.db.redis.host", "localhost:6379"))
+	db := fmt.Sprint(env.GetConfigWithDefaultSetting("app.db.redis.db", 0))
+	hostRedist := fmt.Sprint(env.GetConfigWithDefaultSetting("app.db.redis.host", "localhost:6379"))
 
-	// dbInt, err := strconv.Atoi(db)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	dbInt, err := strconv.Atoi(db)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379", // Redis server address
-		DB:   0,                // Use default DB
+		Addr: hostRedist, // Redis server address
+		DB:   dbInt,      // Use default DB
 	})
 	soal2Repo := repo.RepositorySoal1(database.DB)
 	h := handlers.HandlerSoal1(soal2Repo, redisClient)

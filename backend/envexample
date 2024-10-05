@@ -1,6 +1,0 @@
-	DB_USER = hasbi 
-	DB_PASS=april014
-	DB_NAME = iot_project
-	PORTDB=5432
-    PORT =:9000
-    APIVERSION="/api/V1"

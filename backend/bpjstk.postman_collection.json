@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "762f712c-e7b2-4f24-8ca3-85e67c8efdca",
+		"name": "bpjstk",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "22843720"
+	},
+	"item": [
+		{
+			"name": "soal2",
+			"item": [
+				{
+					"name": "GET DATA ALL  SOAL 2",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GET child data soal 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/get-child-soal2?id=ec49f366-df0b-423e-adba-e329ecf01290",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"get-child-soal2"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "ec49f366-df0b-423e-adba-e329ecf01290"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "soal 1",
+			"item": [
+				{
+					"name": "getll all bulk data soal1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/soal1?page=1&limit=1000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"soal1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "1000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all data soal 1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseurl}}/soal1"
+					},
+					"response": []
+				},
+				{
+					"name": "concurent 1000 data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseurl}}/concurent-soal1"
+					},
+					"response": []
+				},
+				{
+					"name": "getll child soal1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/soal1?page=1&limit=1000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"soal1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "1000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -38,7 +38,7 @@
 
   <div class="p-20 ml-20">
     <div v-if="isWaiting" class="bg-green-100 text-green-800 p-4 rounded mb-4">
-      Tunggu ya...
+      Tunggu ya...(realtime bisa ditest via postman)
     </div>
     <div class="flex items-center">
       <button

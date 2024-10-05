@@ -11,6 +11,7 @@ COPY package*.json ./
 # Copy the local code to the container
 COPY . .
 
+EXPOSE 3000
 
 # Install dependencies
 RUN npm install

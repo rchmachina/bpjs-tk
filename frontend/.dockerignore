@@ -1,0 +1,10 @@
+node_modules
+
+# Ignore logs
+*.log
+
+# Ignore the Dockerfile
+Dockerfile
+
+# Ignore the .dockerignore file
+.dockerignore

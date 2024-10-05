@@ -1,26 +1,20 @@
-# Use an official Golang runtime as a base image
-FROM golang:1.21-alpine
+# Start from the official Go image
+FROM golang:1.23.1
 
-# Set the working directory
-WORKDIR /usr/src/app
+# Set the current working directory inside the container
+WORKDIR /app
 
-# Copy go.mod and go.sum files to the workspace
+# Copy go.mod and go.sum files
 COPY go.mod go.sum ./
 
 # Download all dependencies
 RUN go mod download
 
+# Copy the source code into the container
+COPY . .
 
-
-#installing depedencies for auto reload
-RUN go install github.com/cosmtrek/air@latest
-
-Copy . . 
-
-
-RUN ls -al /usr/src/app
-
-
-
-# Expose the port the app runs on
+# Expose the app on port 8888
 EXPOSE 8888
+
+# Command to run the app using 'go run'
+CMD ["go", "run", "main.go"]

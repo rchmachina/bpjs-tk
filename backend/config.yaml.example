@@ -1,0 +1,19 @@
+app:
+  server: 
+    api_uri_base: /api/v1
+    address: ":8888"
+    address_api: "http://localhost:8888/api/v1"
+  db:
+    domain_name: "db"
+    DB_USER: "postgres"
+    DB_PASS: "password"
+    DB_NAME: "pg_database"
+    PORT_DB: "5432"
+    redis: 
+      db: 0
+      host: "redis:6379"
+  
+  worker:
+    max_Workers_Post: 4
+
+
