@@ -14,7 +14,7 @@
     </div>
 
     
-      <table class="table w-full">
+      <table v-if="data.length > 0" class="table w-full">
         <thead>
           <tr>
             <th class="border px-4 py-2">id</th>
@@ -29,6 +29,7 @@
           </tr>
         </tbody>
       </table>
+      <h1 v-else> there is no child from this parent</h1>
 
   </div>
 </template>
@@ -68,17 +69,22 @@ export default {
     const searchData = () => {
       const link = `${import.meta.env.VITE_BACKEND_API_URL}/get-child-soal2?id=${selectedId.value}`;
       console.log(link);
-
       axios
-        .get(link)
-        .then((response) => {
-          data.value = response.data.data;
-          console.log(data.value);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
+    .get(link)
+    .then((response) => {
+      if (response.data && response.data.data) {
+        data.value = response.data.data; 
+      } else {
+        data.value = []; 
+      }
+      console.log(data.value);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      data.value = []; 
+    });
+
+    }
 
     // Method to fetch all data
     const fetchingGetAllData = () => {

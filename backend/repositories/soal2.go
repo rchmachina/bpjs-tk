@@ -47,7 +47,6 @@ func (r *repository) GetChildDataSoal2(uuidData string) ([]dto.GetDataSoal2, err
 	var getResult []dto.GetDataSoal2
 	var result string
 
-	fmt.Println("masuk pak cik")
 
 	id, err := uuid.Parse(uuidData)
 	if err != nil {
