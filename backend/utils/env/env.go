@@ -13,7 +13,7 @@ func GetConfigWithDefaultSetting(path string, hardCoded interface{}) interface{}
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Println("read config", err)
+		log.Println("read config", hardCoded)
 	}
 	if viper.Get(path) == nil {
 		return hardCoded

@@ -31,9 +31,10 @@ func Soal1Route(e *echo.Group) {
 	h := handlers.HandlerSoal1(soal2Repo, redisClient)
 	e.POST("/concurent-soal1", h.SendConcurentData)
 	e.POST("/soal1", h.PostData)
+	e.POST("/soal11", h.PostData2)
 	e.GET("/soal1", h.GetSoal1)
 	e.GET("/child-soal1", h.GetSoal1Detail)
-	e.GET("/get-redis", h.GetRedisData)
+
 	e.DELETE("/soal1", h.DeleteDataSoal1)
 
 }

@@ -13,17 +13,16 @@ func CreateRandomDates(format string) (string, string) {
 	// Seed the random number generator
 	rand.Seed(time.Now().UnixNano())
 
-	// Generate a random start date within a random range (e.g., 5 years in the past to 5 years in the future)
-	randomDaysStart := rand.Intn(365*10) - 365*5 // Range: -5 years to +5 years
+	// Generate a random start date within a random range (e.g., 5 years in the past to the current date)
+	randomDaysStart := rand.Intn(365*5) * -1 // Range: -5 years to today
 	startDate := time.Now().AddDate(0, 0, randomDaysStart)
 
-	// Generate a random end date that is after the start date
-	// Randomize whether the end date difference is in days, months, or years
-	randomYears := rand.Intn(5)  // Random years to add (up to 5 years)
-	randomMonths := rand.Intn(12) // Random months to add (up to 12 months)
-	randomDaysEnd := rand.Intn(31) // Random days to add (up to 31 days)
+	// Generate a random end date that is no more than 5 months after the start date
+	randomMonths := rand.Intn(5)        // Random months to add (up to 5 months)
+	randomDaysEnd := rand.Intn(31)      // Random days to add (up to 31 days)
 
-	endDate := startDate.AddDate(randomYears, randomMonths, randomDaysEnd)
+	// Add up to 5 months and random days to the start date to get the end date
+	endDate := startDate.AddDate(0, randomMonths, randomDaysEnd)
 
 	// Format the dates
 	start := startDate.Format(format)
@@ -51,6 +50,8 @@ func RandomSaldo(min, max float64) (float64, error) {
 }
 
 // function to count total day we use
+
+// Helper function to generate the monthly date ranges
 func GenerateMonthlyRanges(startDate, endDate time.Time) []dto.DateRange {
 	var dateRanges []dto.DateRange
 
@@ -58,7 +59,7 @@ func GenerateMonthlyRanges(startDate, endDate time.Time) []dto.DateRange {
 	current := startDate
 
 	for current.Before(endDate) || current.Equal(endDate) {
-
+		// Get the first and last day of the current month
 		firstOfMonth := FirstDayOfMonth(current)
 		lastOfMonth := LastDayOfMonth(current)
 
@@ -82,7 +83,6 @@ func GenerateMonthlyRanges(startDate, endDate time.Time) []dto.DateRange {
 
 	return dateRanges
 }
-
 // count total day
 func CountDays(startDate, endDate time.Time) int {
 	return int(endDate.Sub(startDate).Hours()/24) + 1
